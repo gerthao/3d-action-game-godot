@@ -1,8 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://ilice6vnuvc4"]
+[gd_scene load_steps=6 format=3 uid="uid://ilice6vnuvc4"]
 
 [ext_resource type="PackedScene" uid="uid://xm3a5j45elv3" path="res://Asset/Scene/GameLevelScene.tscn" id="1_j4jj2"]
 [ext_resource type="PackedScene" uid="uid://clu64l0yhvhjt" path="res://Asset/Characters/Player/Player.tscn" id="2_pkg4e"]
 [ext_resource type="PackedScene" uid="uid://c18f1e5jjbefc" path="res://Asset/GameObjects/CollectableCoin/CollectableCoin.tscn" id="3_nw2fw"]
+[ext_resource type="Texture2D" uid="uid://byo4gdwy76yce" path="res://Asset/UI/Coin.png" id="4_ccsqo"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_us3rn"]
+font_size = 48
+font_color = Color(1, 0.929412, 0.192157, 1)
 
 [node name="Game" type="Node3D"]
 
@@ -30,5 +35,39 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.61485, 0, -8.51889)
 
 [node name="CollectableCoin3" parent="Entities" instance=ExtResource("3_nw2fw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.30997, 0, -8.51889)
+
+[node name="UI" type="Node3D" parent="."]
+
+[node name="ControlGameplayUI" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CoinHBoxContainer" type="HBoxContainer" parent="UI/ControlGameplayUI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -232.0
+offset_top = 36.0
+offset_right = -116.0
+offset_bottom = 108.0
+grow_horizontal = 0
+theme_override_constants/separation = 16
+alignment = 2
+
+[node name="CoinLabel" type="Label" parent="UI/ControlGameplayUI/CoinHBoxContainer"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_us3rn")
+
+[node name="CoinTextureRect" type="TextureRect" parent="UI/ControlGameplayUI/CoinHBoxContainer"]
+modulate = Color(1, 0.929412, 0.192157, 1)
+layout_mode = 2
+texture = ExtResource("4_ccsqo")
+expand_mode = 2
 
 [editable path="Level"]
