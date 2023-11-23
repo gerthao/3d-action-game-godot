@@ -1,3 +1,5 @@
+class_name CollectableCoin
+
 extends Node3D
 
 @onready var visual: Node3D = $Visual

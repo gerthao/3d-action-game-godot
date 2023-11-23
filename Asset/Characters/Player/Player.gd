@@ -1,3 +1,5 @@
+class_name Player
+
 extends CharacterBody3D
 
 @onready var visual: Node3D = $Visual
@@ -7,7 +9,12 @@ extends CharacterBody3D
 const SPEED = 5.0
 const ANGULAR_SPEED = 7.0
 
-var coins: int
+var coins: int:
+	set(value):
+		coins = value
+		emit_signal("coin_number_updated", coins)
+
+signal coin_number_updated(value: int)
 
 func _physics_process(delta: float) -> void:
 	var input_dir := Input.get_vector("move_left", "move_right", "move_up", "move_down").rotated(-45)

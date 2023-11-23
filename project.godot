@@ -38,6 +38,10 @@ move_down={
 ]
 }
 
+[navigation]
+
+3d/default_cell_height=0.01
+
 [rendering]
 
 anti_aliasing/quality/screen_space_aa=1
