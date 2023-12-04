@@ -20,9 +20,9 @@ curve = SubResource("Curve_7lnm0")
 particle_flag_align_y = true
 direction = Vector3(1, 1, 1)
 spread = 180.0
-gravity = Vector3(0, 0, 0)
 initial_velocity_min = -8.0
 initial_velocity_max = 8.0
+gravity = Vector3(0, 0, 0)
 damping_min = 5.0
 damping_max = 5.0
 scale_curve = SubResource("CurveTexture_d4lcd")
@@ -55,14 +55,14 @@ point_count = 2
 curve = SubResource("Curve_w7u0t")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_e6uak"]
+angle_max = 116.0
 direction = Vector3(0, 1, 0)
 spread = 56.22
-gravity = Vector3(0, -20, 0)
 initial_velocity_min = 15.0
 initial_velocity_max = 15.0
+gravity = Vector3(0, -20, 0)
 damping_min = 25.0
 damping_max = 25.0
-angle_max = 116.0
 scale_min = 0.1
 scale_max = 0.2
 scale_curve = SubResource("CurveTexture_jvc18")

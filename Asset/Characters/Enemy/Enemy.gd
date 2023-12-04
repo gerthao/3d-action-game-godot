@@ -2,15 +2,16 @@ class_name Enemy
 extends CharacterBody3D
 
 
-const SPEED = 0.5
+const SPEED = 2.0
 
-@onready var player: Player
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var visual: Node3D = $Visual
 @onready var animation_player: AnimationPlayer = $Visual/AnimationPlayer
+@onready var player: Player
 
-var direction: Vector3
 var stop_distance: float = 2.2
+var direction: Vector3
+
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
@@ -19,8 +20,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	navigation_agent.target_position = player.global_position
 	
-	direction = navigation_agent.get_next_path_position() - global_position
-	direction.normalized()
+	direction = (navigation_agent.get_next_path_position() - global_position).normalized()
 
 	if is_close_to_player():
 		animation_player.play("NPC_01_IDLE")
