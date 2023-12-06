@@ -1,7 +1,7 @@
 class_name BaseState extends Node
 
 var state_machine: StateMachine
-var character: CharacterBody2D
+var character: CharacterBody3D
 var animation_player: AnimationPlayer
 
 @export var animation_name: String = ''
