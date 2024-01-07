@@ -8,6 +8,7 @@ extends CharacterBody3D
 
 var direction: Vector3
 var can_slide: bool
+var can_attack: bool
 
 const SPEED = 5.0
 const ANGULAR_SPEED = 7.0
@@ -24,6 +25,7 @@ func _physics_process(delta: float) -> void:
 	direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 
 	can_slide = Input.is_action_just_pressed('slide')
+	can_attack = Input.is_action_just_pressed('attack')
 
 	move_and_slide()
 

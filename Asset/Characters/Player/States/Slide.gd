@@ -1,8 +1,8 @@
 class_name Slide
 extends BaseState
 
-var speed: float = 650
-var duration: float = 0.3
+var speed: float = 700
+var duration: float = 0.4
 var remaining_duration: float
 var direction: Vector3
 

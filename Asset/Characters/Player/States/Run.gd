@@ -17,6 +17,8 @@ func state_update(delta: float) -> void:
 		var look_dir = Vector2(character.velocity.z, character.velocity.x)
 		character.visual.rotation.y = lerp_angle(character.visual.rotation.y, look_dir.angle(), character.ANGULAR_SPEED * delta)
 
+	if character.can_attack:
+		state_machine.switch_state('Attack')
 	if character.can_slide:
 		state_machine.switch_state('Slide')
 	if character.direction == Vector3.ZERO:
