@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://dfvy7xsfjroue"]
 
 [ext_resource type="Material" uid="uid://6y8a7flk0cxy" path="res://Asset/Characters/NPC/npc_material.tres" id="1_0f1et"]
-[ext_resource type="Script" path="res://Asset/Characters/Enemy/Enemy.gd" id="1_gt2b4"]
+[ext_resource type="Script" path="res://Asset/Characters/Enemy/Enemy.cs" id="1_ch781"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r6u2y"]
 resource_name = "NPC_02.001"
@@ -2308,7 +2308,7 @@ _data = {
 
 [node name="Enemy" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -17.2717)
-script = ExtResource("1_gt2b4")
+script = ExtResource("1_ch781")
 
 [node name="Visual" type="Node3D" parent="."]
 

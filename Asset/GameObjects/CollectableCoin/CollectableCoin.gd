@@ -11,9 +11,9 @@ var rotation_speed = 1.0
 
 func _process(delta: float) -> void:
 	visual.rotate_y(rotation_speed * delta)
-	
+
 	if !visual.visible && !pickup_vfx.emitting:
-		queue_free() 
+		queue_free()
 
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
