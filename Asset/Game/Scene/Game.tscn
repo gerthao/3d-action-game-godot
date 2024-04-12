@@ -30,14 +30,8 @@ spring_length = 25.0
 transform = Transform3D(1, 0, 0, 0, 1, -2.98023e-07, 0, 2.98023e-08, 1, 19.9983, 8.25182, 7.83859)
 fov = 25.0
 
-[node name="CollectableCoin" parent="Entities" instance=ExtResource("3_nw2fw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8.51889)
-
-[node name="CollectableCoin2" parent="Entities" instance=ExtResource("3_nw2fw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.61485, 0, -8.51889)
-
-[node name="CollectableCoin3" parent="Entities" instance=ExtResource("3_nw2fw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.30997, 0, -8.51889)
+[node name="CollectableCoin4" parent="Entities" instance=ExtResource("3_nw2fw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.39218)
 
 [node name="Enemy" parent="Entities" instance=ExtResource("3_ip1nk")]
 

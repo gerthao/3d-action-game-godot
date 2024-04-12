@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://c18f1e5jjbefc"]
 
+[ext_resource type="Script" path="res://Asset/GameObjects/CollectableCoin/CollectableCoin.cs" id="1_kyrcy"]
 [ext_resource type="PackedScene" uid="uid://2ijeduybl61n" path="res://Asset/Environment/Scene/coin.tscn" id="1_r0rc5"]
-[ext_resource type="Script" path="res://Asset/GameObjects/CollectableCoin/CollectableCoin.gd" id="1_w4bha"]
 [ext_resource type="PackedScene" uid="uid://d26l7qkbcg5jp" path="res://Asset/VFX/Scene/coinPickup_particle.tscn" id="2_ax7qd"]
 
 [sub_resource type="Animation" id="Animation_vdhbh"]
@@ -93,7 +93,7 @@ _data = {
 [sub_resource type="SphereShape3D" id="SphereShape3D_cbcf0"]
 
 [node name="CollectableCoin" type="Node3D"]
-script = ExtResource("1_w4bha")
+script = ExtResource("1_kyrcy")
 
 [node name="Visual" parent="." instance=ExtResource("1_r0rc5")]
 
