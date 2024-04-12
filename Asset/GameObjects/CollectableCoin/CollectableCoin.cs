@@ -16,7 +16,6 @@ public partial class CollectableCoin : Node3D
     {
         if (body is Player player)
         {
-            GD.Print("Dafuck you think you doin");
             PickupVfx.Emitting = true;
             Animation.Play("collected");
             RotationSpeed = 10.0;

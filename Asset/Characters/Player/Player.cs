@@ -53,21 +53,18 @@ public partial class Player : CharacterBody3D, IHasAnimation
 
     private void OnIdle()
     {
-        GD.Print("on idle");
         AnimationPlayer.Play("LittleAdventurerAndie_Idel");
         FootStepVfx.Emitting = false;
     }
 
     private void OnRun()
     {
-        GD.Print("on run");
         AnimationPlayer.Play("LittleAdventurerAndie_Run");
         FootStepVfx.Emitting = true;
     }
 
     private void OnSlide()
     {
-        GD.Print("on slide");
         AnimationPlayer.Play("LittleAdventurerAndie_Roll");
         FootStepVfx.Emitting = true;
     }
