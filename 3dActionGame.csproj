@@ -6,7 +6,4 @@
         <EnableDynamicLoading>true</EnableDynamicLoading>
         <RootNamespace>dActionGame</RootNamespace>
     </PropertyGroup>
-    <ItemGroup>
-      <Folder Include="Asset\Characters\Player\States\" />
-    </ItemGroup>
 </Project>
