@@ -14,13 +14,12 @@ public partial class CollectableCoin : Node3D
 
     public void OnArea3dBodyEntered(Node3D body)
     {
-        if (body is Player player)
-        {
-            PickupVfx.Emitting = true;
-            Animation.Play("collected");
-            RotationSpeed = 10.0;
-            player.AddCoin(Value);
-        }
+        if (body is not Player player) return;
+
+        PickupVfx.Emitting = true;
+        Animation.Play("collected");
+        RotationSpeed = 10.0;
+        player.AddCoin(Value);
     }
 
     public override void _Ready()

@@ -13,13 +13,22 @@ public partial class Enemy : CharacterBody3D
     private double            _stopDistance = 2.2;
     private Node3D            _visual;
 
+    private void WaitForMap(Rid rid)
+    {
+        SetPhysicsProcess(true);
+        NavigationServer3D.MapChanged -= WaitForMap;
+    }
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        SetPhysicsProcess(false);
         _visual          = GetNode<Node3D>("Visual");
         _animationPlayer = GetNode<AnimationPlayer>("Visual/AnimationPlayer");
         _navigationAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
         _player          = GetTree().GetFirstNodeInGroup("player") as Node3D;
+
+        NavigationServer3D.MapChanged += WaitForMap;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -36,10 +45,13 @@ public partial class Enemy : CharacterBody3D
         Velocity = Velocity.Lerp(_direction * (float)Speed, (float)delta);
         _animationPlayer.Play("NPC_01_WALK");
 
-        if (!IsMoving()) return;
+        if (IsMoving())
+        {
+            var lookDirection = new Vector2(Velocity.Z, Velocity.X);
+            _visual.Rotation = new Vector3(_visual.Rotation.X, lookDirection.Angle(), _visual.Rotation.Z);
+        }
 
-        var lookDirection = new Vector2(Velocity.Z, Velocity.X);
-        _visual.RotateY(lookDirection.Angle());
+        MoveAndSlide();
     }
 
     private bool IsCloseToPlayer() => _navigationAgent.DistanceToTarget() < _stopDistance;
