@@ -3,28 +3,29 @@ using dActionGame.Asset.Scripts.State;
 
 namespace dActionGame.Asset.Characters.Player.StateHandlers;
 
-public class PlayerMovement : EntityStateHandler<Player>
+public class PlayerMovement : EntityStateHandler<Player, PlayerStateValue>
 {
-    public PlayerMovement(Player character, EntityState<Player> initialState) : base(character, initialState)
+    private readonly IStatePool<Player, PlayerStateValue> _statePool = new PlayerStatePool();
+
+    public PlayerMovement(Player character, EntityState<Player, PlayerStateValue> initialState) : base(
+        character,
+        initialState
+    )
     {
-        EmitStateSignal(CurrentState);
+        EmitStateSignal();
     }
 
     public override void Update(double delta)
     {
-        var nextState = CurrentState.Next(delta);
+        var nextState = CurrentState.Update(delta);
+        CurrentState = _statePool.GetState(Entity, nextState);
 
-        if (CurrentState.GetType() != nextState.GetType())
-        {
-            EmitStateSignal(nextState);
-        }
-
-        CurrentState  = nextState;
+        EmitStateSignal();
     }
 
-    private void EmitStateSignal(EntityState<Player> state)
+    private void EmitStateSignal()
     {
-        switch (state)
+        switch (CurrentState)
         {
             case PlayerIdle:
                 Entity.EmitSignal(Player.SignalName.PlayerIdle);

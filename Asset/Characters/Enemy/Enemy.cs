@@ -9,7 +9,7 @@ public partial class Enemy : CharacterBody3D
     private AnimationPlayer   _animationPlayer;
     private Vector3           _direction;
     private NavigationAgent3D _navigationAgent;
-    private Node3D            _player;
+    private Node3D            _target;
     private double            _stopDistance = 2.2;
     private Node3D            _visual;
 
@@ -26,17 +26,17 @@ public partial class Enemy : CharacterBody3D
         _visual          = GetNode<Node3D>("Visual");
         _animationPlayer = GetNode<AnimationPlayer>("Visual/AnimationPlayer");
         _navigationAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
-        _player          = GetTree().GetFirstNodeInGroup("player") as Node3D;
+        _target          = GetTarget;
 
         NavigationServer3D.MapChanged += WaitForMap;
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        _navigationAgent.TargetPosition = _player.GlobalPosition;
+        _navigationAgent.TargetPosition = _target.GlobalPosition;
         _direction                      = (_navigationAgent.GetNextPathPosition() - GlobalPosition).Normalized();
 
-        if (IsCloseToPlayer())
+        if (IsCloseToTarget)
         {
             _animationPlayer.Play("NPC_01_IDLE");
             return;
@@ -45,7 +45,7 @@ public partial class Enemy : CharacterBody3D
         Velocity = Velocity.Lerp(_direction * (float)Speed, (float)delta);
         _animationPlayer.Play("NPC_01_WALK");
 
-        if (IsMoving())
+        if (IsMoving)
         {
             var lookDirection = new Vector2(Velocity.Z, Velocity.X);
             _visual.Rotation = new Vector3(_visual.Rotation.X, lookDirection.Angle(), _visual.Rotation.Z);
@@ -54,7 +54,9 @@ public partial class Enemy : CharacterBody3D
         MoveAndSlide();
     }
 
-    private bool IsCloseToPlayer() => _navigationAgent.DistanceToTarget() < _stopDistance;
+    private bool IsCloseToTarget => _navigationAgent.DistanceToTarget() < _stopDistance;
 
-    private bool IsMoving() => Velocity.Length() > 0.2;
+    private bool IsMoving => Velocity.Length() > 0.2;
+
+    private Node3D GetTarget => GetTree().GetFirstNodeInGroup("player") as Node3D;
 }

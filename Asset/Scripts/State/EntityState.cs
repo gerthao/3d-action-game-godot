@@ -1,14 +1,15 @@
-﻿using dActionGame.Asset.Characters.Player;
-using Godot;
+﻿using Godot;
 
 namespace dActionGame.Asset.Scripts.State;
 
-public abstract class EntityState<T> where T: Node3D
+public abstract class EntityState<T, TStateType> where T: Node3D
 {
-    protected       T               Entity;
-    public abstract EntityState<T> Next(double delta);
+    protected T Entity;
 
-    public EntityState(T entity)
+    public EntityState(T                     entity) => Entity = entity;
+    public abstract TStateType Update(double delta);
+
+    public virtual void Reset(T entity)
     {
         Entity = entity;
     }

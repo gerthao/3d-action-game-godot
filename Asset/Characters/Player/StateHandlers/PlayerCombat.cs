@@ -1,15 +1,32 @@
-﻿using dActionGame.Asset.Scripts.State;
+﻿using dActionGame.Asset.Characters.Player.States;
+using dActionGame.Asset.Scripts.State;
 
 namespace dActionGame.Asset.Characters.Player.StateHandlers;
 
-public class PlayerCombat: EntityStateHandler<Player>
+public class PlayerCombat : EntityStateHandler<Player, PlayerStateValue>
 {
-    public PlayerCombat(Player entity, EntityState<Player> initialState) : base(entity, initialState)
+    private readonly IStatePool<Player, PlayerStateValue> _statePool = new PlayerStatePool();
+
+    public PlayerCombat(Player entity, EntityState<Player, PlayerStateValue> initialState) : base(entity, initialState)
     {
     }
 
     public override void Update(double delta)
     {
-        throw new System.NotImplementedException();
+        /*var nextState = CurrentState.Update(delta);
+
+        if (CurrentState.GetType() != nextState.GetType()) EmitStateSignal(nextState);
+
+        CurrentState = nextState;*/
+    }
+
+    private void EmitStateSignal(EntityState<Player, PlayerStateValue> state)
+    {
+        switch (state)
+        {
+            case PlayerAttack:
+                Entity.EmitSignal(Player.SignalName.PlayerAttack);
+                break;
+        }
     }
 }

@@ -12,6 +12,8 @@ public partial class Player : CharacterBody3D, IHasAnimation
     [Signal]
     public delegate void CoinNumberUpdatedEventHandler(int value);
 
+    [Signal]
+    public delegate void PlayerAttackEventHandler();
 
     [Signal]
     public delegate void PlayerIdleEventHandler();
@@ -26,15 +28,15 @@ public partial class Player : CharacterBody3D, IHasAnimation
 
     private double _stopDistance = 2.2;
 
-    public Vector3                    Direction;
-    public GpuParticles3D             FootStepVfx;
-    public Node3D                     Visual;
-    public EntityStateHandler<Player> PlayerMovement        { get; set; }
-    public PlayerVisualComponent      PlayerVisualComponent { get; set; }
-    public bool                       IsStanding            => Direction.IsZeroApprox();
-    public bool                       IsMoving              => !Direction.IsZeroApprox();
-    public bool                       CanAttack             => Input.IsActionJustPressed("attack");
-    public bool                       CanSlide              => Input.IsActionJustPressed("slide");
+    public Vector3                                      Direction;
+    public GpuParticles3D                               FootStepVfx;
+    public Node3D                                       Visual;
+    public EntityStateHandler<Player, PlayerStateValue> PlayerMovement        { get; set; }
+    public PlayerVisualComponent                        PlayerVisualComponent { get; set; }
+    public bool                                         IsStanding            => Direction.IsZeroApprox();
+    public bool                                         IsMoving              => !Direction.IsZeroApprox();
+    public bool                                         CanAttack             => Input.IsActionJustPressed("attack");
+    public bool                                         CanSlide              => Input.IsActionJustPressed("slide");
 
     public double Speed        => 5.0;
     public double AngularSpeed => 7.0;
@@ -69,15 +71,22 @@ public partial class Player : CharacterBody3D, IHasAnimation
         FootStepVfx.Emitting = true;
     }
 
+    private void OnAttack()
+    {
+        AnimationPlayer.Play("LittleAdventurerAndie_Attack3");
+        FootStepVfx.Emitting = true;
+    }
+
     public override void _Ready()
     {
         Visual          = GetNode<Node3D>("Visual");
         FootStepVfx     = GetNode<GpuParticles3D>("Visual/VFX/Footstep_GPUParticles3D");
         AnimationPlayer = GetNode<AnimationPlayer>("Visual/AnimationPlayer");
 
-        PlayerIdle  += OnIdle;
-        PlayerRun   += OnRun;
-        PlayerSlide += OnSlide;
+        PlayerIdle   += OnIdle;
+        PlayerRun    += OnRun;
+        PlayerSlide  += OnSlide;
+        PlayerAttack += OnAttack;
 
         PlayerMovement        = new PlayerMovement(this, new PlayerIdle(this));
         PlayerVisualComponent = new PlayerVisualComponent(this);
