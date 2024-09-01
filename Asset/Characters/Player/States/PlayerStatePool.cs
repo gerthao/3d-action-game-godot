@@ -7,6 +7,7 @@ public class PlayerStatePool : IStatePool<Player, PlayerStateValue>
     private static PlayerIdle  _playerIdle;
     private static PlayerRun   _playerRun;
     private static PlayerSlide _playerSlide;
+    private static PlayerAttack _playerAttack;
 
     public EntityState<Player, PlayerStateValue> GetState(Player entity, PlayerStateValue type) =>
         type switch
@@ -14,6 +15,7 @@ public class PlayerStatePool : IStatePool<Player, PlayerStateValue>
             PlayerStateValue.Idle  => GetPlayerIdle(entity),
             PlayerStateValue.Run   => GetPlayerRun(entity),
             PlayerStateValue.Slide => GetPlayerSlide(entity),
+            PlayerStateValue.Attack => GetPlayerAttack(entity),
             _                      => GetPlayerIdle(entity),
         };
 
@@ -39,5 +41,13 @@ public class PlayerStatePool : IStatePool<Player, PlayerStateValue>
         else _playerSlide.Reset(player);
 
         return _playerSlide;
+    }
+
+    private PlayerAttack GetPlayerAttack(Player player)
+    {
+        if (_playerAttack == null) _playerAttack = new PlayerAttack(player);
+        else _playerAttack.Reset(player);
+
+        return _playerAttack;
     }
 }

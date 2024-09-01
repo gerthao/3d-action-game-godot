@@ -10,6 +10,7 @@ public class PlayerRun : EntityState<Player, PlayerStateValue>
     {
         GD.Print("Player is running...");
     }
+
     private void HandlePlayer(double delta)
     {
         Entity.Velocity = Entity.IsMoving
@@ -25,7 +26,7 @@ public class PlayerRun : EntityState<Player, PlayerStateValue>
             );
 
 
-        if (Entity.Velocity.Length() > 0.2)
+        if (MeetsVelocityThreshold())
         {
             var (x, _, z) = Entity.Velocity;
             var lookDirection = new Vector2(z, x);
@@ -38,14 +39,15 @@ public class PlayerRun : EntityState<Player, PlayerStateValue>
             );
         }
     }
+    private bool MeetsVelocityThreshold() => Entity.Velocity.Length() > 0.2;
 
     public override PlayerStateValue Update(double delta)
     {
         HandlePlayer(delta);
 
-        if (!Entity.IsMoving) return PlayerStateValue.Idle;
-        if (Entity.CanSlide) return PlayerStateValue.Slide;
-
-        return PlayerStateValue.Run;
+        return Entity.IsStanding ? PlayerStateValue.Idle :
+            Entity.CanSlide ? PlayerStateValue.Slide :
+            Entity.CanAttack ? PlayerStateValue.Attack :
+            PlayerStateValue.Run;
     }
 }

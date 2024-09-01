@@ -10,11 +10,9 @@ public class PlayerIdle : EntityState<Player, PlayerStateValue>
         GD.Print("Player is idle...");
     }
 
-    public override PlayerStateValue Update(double delta)
-    {
-        if (Entity.IsMoving) return PlayerStateValue.Run;
-        if (Entity.CanSlide) return PlayerStateValue.Slide;
-
-        return PlayerStateValue.Idle;
-    }
+    public override PlayerStateValue Update(double delta) =>
+        Entity.IsMoving ? PlayerStateValue.Run :
+        Entity.CanSlide ? PlayerStateValue.Slide :
+        Entity.CanAttack ? PlayerStateValue.Attack :
+        PlayerStateValue.Idle;
 }

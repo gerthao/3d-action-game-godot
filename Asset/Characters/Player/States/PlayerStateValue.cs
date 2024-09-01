@@ -5,4 +5,5 @@ public enum PlayerStateValue
     Idle,
     Run,
     Slide,
+    Attack,
 }

@@ -4,10 +4,10 @@ namespace dActionGame.Asset.Scripts.State;
 
 public abstract class EntityStateHandler<T, TStateTypes> where T: Node3D
 {
-    protected EntityState<T, TStateTypes> CurrentState;
-    protected T                           Entity;
+    protected          EntityState<T, TStateTypes> CurrentState;
+    protected readonly T                           Entity;
 
-    public EntityStateHandler(T entity, EntityState<T, TStateTypes> initialState)
+    protected EntityStateHandler(T entity, EntityState<T, TStateTypes> initialState)
     {
         Entity       = entity;
         CurrentState = initialState;

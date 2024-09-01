@@ -4,6 +4,7 @@ namespace dActionGame.Asset.Scripts.Monads;
 
 public abstract class Maybe<T>
 {
+    public static   Maybe<T>       Lift(T value) => value == null ? None() : Some(value);
     public static   Maybe<T>       Some(T value) => new Some<T>(value);
     public static   Maybe<T>       None()        => new None<T>();
     public abstract Maybe<TResult> SelectMany<TResult>(Func<T, Maybe<TResult>> func);

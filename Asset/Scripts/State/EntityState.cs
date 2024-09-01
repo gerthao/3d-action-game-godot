@@ -6,7 +6,7 @@ public abstract class EntityState<T, TStateType> where T: Node3D
 {
     protected T Entity;
 
-    public EntityState(T                     entity) => Entity = entity;
+    protected EntityState(T entity) => Entity = entity;
     public abstract TStateType Update(double delta);
 
     public virtual void Reset(T entity)

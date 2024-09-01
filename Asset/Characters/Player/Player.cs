@@ -1,8 +1,4 @@
-using dActionGame.Asset.Characters.Player.StateHandlers;
-using dActionGame.Asset.Characters.Player.States;
-using dActionGame.Asset.Characters.Player.Visuals;
 using dActionGame.Asset.Scripts.Interfaces;
-using dActionGame.Asset.Scripts.State;
 using Godot;
 
 namespace dActionGame.Asset.Characters.Player;
@@ -12,34 +8,23 @@ public partial class Player : CharacterBody3D, IHasAnimation
     [Signal]
     public delegate void CoinNumberUpdatedEventHandler(int value);
 
-    [Signal]
-    public delegate void PlayerAttackEventHandler();
-
-    [Signal]
-    public delegate void PlayerIdleEventHandler();
-
-    [Signal]
-    public delegate void PlayerRunEventHandler();
-
-    [Signal]
-    public delegate void PlayerSlideEventHandler();
 
     private int _coins;
 
     private double _stopDistance = 2.2;
 
-    public Vector3                                      Direction;
-    public GpuParticles3D                               FootStepVfx;
-    public Node3D                                       Visual;
-    public EntityStateHandler<Player, PlayerStateValue> PlayerMovement        { get; set; }
-    public PlayerVisualComponent                        PlayerVisualComponent { get; set; }
-    public bool                                         IsStanding            => Direction.IsZeroApprox();
-    public bool                                         IsMoving              => !Direction.IsZeroApprox();
-    public bool                                         CanAttack             => Input.IsActionJustPressed("attack");
-    public bool                                         CanSlide              => Input.IsActionJustPressed("slide");
+    public Vector3        Direction;
+    public GpuParticles3D FootStepVfx;
 
-    public double Speed        => 5.0;
-    public double AngularSpeed => 7.0;
+    public Node3D Visual;
+
+    public bool             IsStanding   => Direction.IsZeroApprox();
+    public bool             IsMoving     => !Direction.IsZeroApprox();
+    public bool             CanAttack    => Input.IsActionJustPressed("attack");
+    public bool             CanSlide     => Input.IsActionJustPressed("slide");
+    public CollisionShape3D HitBox       { get; private set; }
+    public double           Speed        => 5.0;
+    public double           AngularSpeed => 7.0;
 
     private int Coins
     {
@@ -53,49 +38,18 @@ public partial class Player : CharacterBody3D, IHasAnimation
 
     public AnimationPlayer AnimationPlayer { get; set; }
 
-    private void OnIdle()
-    {
-        AnimationPlayer.Play("LittleAdventurerAndie_Idel");
-        FootStepVfx.Emitting = false;
-    }
-
-    private void OnRun()
-    {
-        AnimationPlayer.Play("LittleAdventurerAndie_Run");
-        FootStepVfx.Emitting = true;
-    }
-
-    private void OnSlide()
-    {
-        AnimationPlayer.Play("LittleAdventurerAndie_Roll");
-        FootStepVfx.Emitting = true;
-    }
-
-    private void OnAttack()
-    {
-        AnimationPlayer.Play("LittleAdventurerAndie_Attack3");
-        FootStepVfx.Emitting = true;
-    }
 
     public override void _Ready()
     {
         Visual          = GetNode<Node3D>("Visual");
         FootStepVfx     = GetNode<GpuParticles3D>("Visual/VFX/Footstep_GPUParticles3D");
         AnimationPlayer = GetNode<AnimationPlayer>("Visual/AnimationPlayer");
-
-        PlayerIdle   += OnIdle;
-        PlayerRun    += OnRun;
-        PlayerSlide  += OnSlide;
-        PlayerAttack += OnAttack;
-
-        PlayerMovement        = new PlayerMovement(this, new PlayerIdle(this));
-        PlayerVisualComponent = new PlayerVisualComponent(this);
+        HitBox          = GetNode<CollisionShape3D>("HitBoxComponent/HitBox/CollisionShape3D");
     }
 
     public override void _PhysicsProcess(double delta)
     {
         Direction = GetInputDirection();
-        PlayerMovement.Update(delta);
         MoveAndSlide();
     }
 
