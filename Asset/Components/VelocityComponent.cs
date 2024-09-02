@@ -8,7 +8,7 @@ public partial class VelocityComponent<T> : Node where T: Node
     [Export] private int     _speed        = 40;
     private          Vector3 _velocity     = Vector3.Zero;
 
-    public void AcclelerateToPlayer()
+    public void AccelerateToPlayer()
     {
         var player = GetTree().GetFirstNodeInGroup("player") as Node3D;
     }

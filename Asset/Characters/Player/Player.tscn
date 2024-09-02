@@ -712,6 +712,23 @@ tracks/63/path = NodePath("RootNode/LittleAdventurerAndie_GameRig/Skeleton3D:DEF
 tracks/63/interp = 1
 tracks/63/loop_wrap = true
 tracks/63/keys = PackedFloat32Array(0, 1, -0.00719882, -0.0762325, 0.992648, 0.0937377, 0.0333333, 1, 0.00367288, -0.094678, 0.994671, -0.0406477, 0.0666667, 1, 0.0107832, -0.128895, 0.94625, -0.296445, 0.1, 1, -0.000128486, -0.158632, 0.892136, -0.423, 0.166667, 1, -0.103109, -0.196573, 0.933617, 0.281225, 0.566667, 1, -0.103109, -0.196573, 0.933617, 0.281225)
+tracks/64/type = "method"
+tracks/64/imported = false
+tracks/64/enabled = true
+tracks/64/path = NodePath("../StateMachine/Attack")
+tracks/64/interp = 1
+tracks/64/loop_wrap = true
+tracks/64/keys = {
+"times": PackedFloat32Array(0.1, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"EnableHitBox"
+}, {
+"args": [],
+"method": &"DisableHitBox"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_2f5ek"]
 resource_name = "LittleAdventurerAndie_ATTACK_02"
@@ -4983,13 +5000,37 @@ _data = {
 "play_blade_vfx": SubResource("Animation_vcv5v")
 }
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_38pkr"]
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_805sv"]
 size = Vector3(2, 2, 2)
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_38pkr"]
+
 [node name="Player" type="CharacterBody3D" groups=["player"]]
 script = ExtResource("1_aa55h")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("_animationPlayer", "_currentState", "_player")]
+script = ExtResource("6_tk52x")
+_animationPlayer = NodePath("../Visual/AnimationPlayer")
+_currentState = NodePath("Idle")
+_player = NodePath("..")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("7_13rkq")
+_animation = "LittleAdventurerAndie_Idel"
+
+[node name="Run" type="Node" parent="StateMachine"]
+script = ExtResource("8_4kwvx")
+_animation = "LittleAdventurerAndie_Run"
+
+[node name="Slide" type="Node" parent="StateMachine"]
+script = ExtResource("9_p2vjs")
+_animation = "LittleAdventurerAndie_Roll"
+
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("_vfxAnimationPlayer", "_vfxEffect")]
+script = ExtResource("10_bkogv")
+_animation = "LittleAdventurerAndie_ATTACK_01"
+_vfxAnimationPlayer = NodePath("../../Visual/VFX/SwordVFXModels/BladeMaterialEffectAnimationPlayer")
+_vfxEffect = NodePath("../../Visual/VFX/SwordVFXModels/RootNode/Blade VFX 01")
 
 [node name="Visual" type="Node3D" parent="."]
 
@@ -5769,6 +5810,13 @@ libraries = {
 "": SubResource("AnimationLibrary_fdx5h")
 }
 
+[node name="HitBox" type="Area3D" parent="Visual"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Visual/HitBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 1)
+shape = SubResource("BoxShape3D_805sv")
+disabled = true
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_38pkr")
@@ -5780,33 +5828,4 @@ light_energy = 0.75
 light_specular = 0.2
 omni_range = 3.0
 
-[node name="HitBoxComponent" type="Node" parent="."]
-
-[node name="HitBox" type="Area3D" parent="HitBoxComponent"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBoxComponent/HitBox"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 1)
-shape = SubResource("BoxShape3D_805sv")
-disabled = true
-
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("_animationPlayer", "_currentState", "_player")]
-script = ExtResource("6_tk52x")
-_animationPlayer = NodePath("../Visual/AnimationPlayer")
-_currentState = NodePath("Idle")
-_player = NodePath("..")
-
-[node name="Idle" type="Node" parent="StateMachine"]
-script = ExtResource("7_13rkq")
-_animation = "LittleAdventurerAndie_Idel"
-
-[node name="Run" type="Node" parent="StateMachine"]
-script = ExtResource("8_4kwvx")
-_animation = "LittleAdventurerAndie_Run"
-
-[node name="Slide" type="Node" parent="StateMachine"]
-script = ExtResource("9_p2vjs")
-_animation = "LittleAdventurerAndie_Roll"
-
-[node name="Attack" type="Node" parent="StateMachine"]
-script = ExtResource("10_bkogv")
-_animation = "LittleAdventurerAndie_ATTACK_01"
+[connection signal="body_entered" from="Visual/HitBox" to="StateMachine/Attack" method="OnHitBoxBodyEntered"]

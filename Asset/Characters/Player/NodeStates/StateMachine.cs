@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using dActionGame.Asset.Scripts.Monads;
 using Godot;
 
 namespace dActionGame.Asset.Characters.Player.NodeStates;
@@ -20,12 +21,12 @@ public partial class StateMachine : Node
     {
         foreach (StateType stateType in Enum.GetValues(typeof(StateType)))
         {
-            var stateNode = GetNodeOrNull<State>(stateType.ToString());
-            if (stateNode == null) continue;
+            var state = GetNodeOrNull<State>(stateType.ToString());
+            if (state == null) continue;
 
-            InitializeState(stateNode);
+            InitializeState(state);
 
-            _states.Add(stateType, stateNode);
+            _states.Add(stateType, state);
         }
 
         _currentState.Enter();

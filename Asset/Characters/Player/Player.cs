@@ -44,7 +44,7 @@ public partial class Player : CharacterBody3D, IHasAnimation
         Visual          = GetNode<Node3D>("Visual");
         FootStepVfx     = GetNode<GpuParticles3D>("Visual/VFX/Footstep_GPUParticles3D");
         AnimationPlayer = GetNode<AnimationPlayer>("Visual/AnimationPlayer");
-        HitBox          = GetNode<CollisionShape3D>("HitBoxComponent/HitBox/CollisionShape3D");
+        HitBox          = GetNode<CollisionShape3D>("Visual/HitBox/CollisionShape3D");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -53,7 +53,7 @@ public partial class Player : CharacterBody3D, IHasAnimation
         MoveAndSlide();
     }
 
-    public Vector3 GetInputDirection()
+    private Vector3 GetInputDirection()
     {
         var inputDirection = Input.GetVector(
             "move_left",

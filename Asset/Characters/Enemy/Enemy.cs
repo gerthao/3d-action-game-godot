@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 namespace dActionGame.Asset.Characters.Enemy;
@@ -13,6 +14,17 @@ public partial class Enemy : CharacterBody3D
     private double            _stopDistance = 2.2;
     private Node3D            _visual;
 
+    private int _maxHealth = 100;
+    private int _currentHealth;
+
+    public void ApplyDamage(int amount)
+    {
+        _currentHealth -= amount;
+        _currentHealth = Math.Clamp(_currentHealth, 0, _maxHealth);
+
+        GD.Print("Enemy health: " + _currentHealth);
+    }
+
     private void WaitForMap(Rid rid)
     {
         SetPhysicsProcess(true);
@@ -27,6 +39,7 @@ public partial class Enemy : CharacterBody3D
         _animationPlayer = GetNode<AnimationPlayer>("Visual/AnimationPlayer");
         _navigationAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
         _target          = GetTarget;
+        _currentHealth   = _maxHealth;
 
         NavigationServer3D.MapChanged += WaitForMap;
     }
